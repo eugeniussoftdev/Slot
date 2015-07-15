@@ -2,4 +2,4 @@
 
 HTML5 Canvas slot machine
 
-Atension! Start web-server at the game forlder
+Atension! Start web-server at the game folder
