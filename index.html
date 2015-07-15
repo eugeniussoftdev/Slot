@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Slot</title>
+    <style>
+    canvas {
+        border: 1px solid black;
+        position: absolute;
+        margin: auto;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+    </style>
+</head>
+
+<body>
+    <script>
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'img/img.json', false);
+    xhr.send();
+    var xhr2 = new XMLHttpRequest();
+    xhr2.open('GET', 'img_blur/img_blur.json', false);
+    xhr2.send();
+
+    // var imgArray = JSON.parse(xhr.response);
+    // var imgBlurArray = JSON.parse(xhr2.response);
+    var canvas, ctx;
+    var img;
+    var reels = [];
+    var WIDTH = 500,
+        HEIGTH = 400;
+
+    var imgArray = ['img/1.png', 'img/2.png', 'img/3.png', 'img/4.png', 'img/5.png', 'img/6.png', 'img/7.png', 'img/8.png', 'img/9.png', 'img/10.png', 'img/11.png', 'img/12.png'];
+    var imgSmooth = ['img_blur/1.png', 'img_blur/2.png', 'img_blur/3.png', 'img_blur/4.png', 'img_blur/5.png', 'img_blur/6.png', 'img_blur/7.png', 'img_blur/8.png', 'img_blur/9.png', 'img_blur/10.png', 'img_blur/11.png', 'img_blur/12.png'];
+
+
+
+    window.requestAnimFrame = (function() {
+        return window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            window.oRequestAnimationFrame ||
+            window.msRequestAnimationFrame ||
+            function( /* function */ callback, /* DOMElement */ element) {
+                window.setTimeout(callback, 1000 / 60);
+            };
+    })();
+
+    function main() {
+
+        canvas = document.createElement('canvas');
+        canvas.width = WIDTH;
+        canvas.height = HEIGTH;
+        ctx = canvas.getContext('2d');
+        document.body.appendChild(canvas);
+
+        init();
+    };
+
+    function imgLoad(imgArray) {
+        var Images = [];
+        imgArray.forEach(function(link) {
+            img = new Image();
+            img.src = link;
+            Images.push(img);
+        });
+
+        return Images;
+
+    };
+
+    function Reel(x, y, imgArray) {
+        var _this = this;
+        _this.x = x;
+        _this.y = y;
+        _this.vel = 10;
+        _this.counter = 200;
+        _this.images = [];
+        _this.IMAGE = [];
+
+        this.changeY = function() {
+            _this.y += _this.vel;
+        };
+        this.imgLoad = function(imgArray) {
+
+            imgArray.forEach(function(link) {
+                img = new Image();
+                img.src = link;
+                _this.IMAGE.push(img);
+            });
+
+            return Images;
+
+        };
+        this.random = function(IMG) {
+
+            _this.images = IMG.sort(function() {
+                return Math.random()
+            });
+        };
+        this.draw = function(links) {
+
+            // imgLoad(imgArray);
+            this.random(imgLoad(imgArray));
+            // img.addEventListener('load', function(){
+            // 	for(var i = 0; i < _this.images.length; i+=1){
+
+            // 	ctx.drawImage(_this.images[i], _this.x, _this.y + i * canvas.height / 4, canvas.width / 5, canvas.height / 4);
+            // 	}
+            // 	console.log(_this.images[_this.images.length - 1].y);
+            // 	console.log(_this.y);
+            // });
+            img.addEventListener('load', function() {
+                for (var i = 0; i < links.length; i += 1) {
+
+                    ctx.drawImage(links[i], _this.x, _this.y + i * canvas.height / 4, canvas.width / 5, canvas.height / 4);
+                }
+                // _this.counter = links.length * canvas.height / 4;
+                // console.log(canvas.height / 4);
+            });
+        };
+    };
+
+    function makeReels() {
+
+        for (var i = 0; i < 5; i += 1) {
+            reels.push(new Reel(canvas.width / 5 * i, -800, imgArray));
+        }
+    };
+
+    function init() {
+        makeReels();
+        console.log(reels[0].y);
+        for (var i = 0; i < 5; i += 1) {
+            reels[i].draw(imgLoad(imgArray));
+        };
+        canvas.addEventListener('click', function() {
+
+            loop();
+        });
+         console.log(reels);
+    };
+
+    function loop() {
+        updateTest();
+        if (reels[0].counter) {
+            window.requestAnimationFrame(loop);
+
+        } else {
+
+            reels[0].counter = 120;
+            
+            // reels[0].draw(imgLoad(imgArray));
+            // console.log(makeReels());
+        };
+    };
+
+    function updateTest() {
+
+        reels[0].changeY();
+        reels[0].draw(imgLoad(imgArray));
+        reels[0].counter--;
+
+
+
+       
+
+    };
+    main();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>TEST</title>
+	<style>
+	canvas{
+		border: 1px solid black;
+		position: absolute;
+		margin: auto;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+	</style>
+</head>
+<body>
+	
+
+
+</body>
+<script>
+	var WIDTH = 500, HEIGHT = 400;
+	var canvas, ctx;
+	var REQUEST;
+	var stop = true;
+	var IMG = [];
+	var IMGSmooth = [];
+	var img;
+	var reels = [];
+	var x = 0;
+	
+var imgArray = ['img/1.png','img/2.png','img/3.png','img/4.png','img/5.png','img/6.png','img/7.png','img/8.png','img/9.png','img/10.png','img/11.png','img/12.png'];
+var imgSmooth = ['img_blur/1.png','img_blur/2.png','img_blur/3.png','img_blur/4.png','img_blur/5.png','img_blur/6.png','img_blur/7.png','img_blur/8.png','img_blur/9.png','img_blur/10.png','img_blur/11.png','img_blur/12.png'];
+	function main(){
+		canvas = document.createElement('canvas');
+		canvas.width = WIDTH;
+		canvas.height = HEIGHT;
+		ctx = canvas.getContext('2d');
+
+		document.body.appendChild(canvas);
+
+		init();
+		canvas.addEventListener('click', function(){
+			update();
+		})
+	
+	};
+	function DrawImage(x,y){
+		this.x = x;
+		this.y = y;
+		this.draw = function(x){
+			ctx.fillRect(this.x, this.y, 40, 40);
+		};
+	};
+	var first =	new DrawImage(10,10);
+	var second =	new DrawImage(40,40);
+	function create (){
+		for(var i = 0; i < 5; i+=1){
+
+			reels.push(new DrawImage(i, i * 50));
+		};
+	};
+	function update(){
+		create();
+		x +=10;
+		for(var i = 0; i < reels.length; i+=1){
+			reels[i].draw(x);
+		};
+		window.requestAnimationFrame(update);
+		
+	};
+	function init(){
+		// first.draw();
+		// second.draw();
+
+		create();
+		console.log(reels);
+		for(var i = 0; i < reels.length; i+=1){
+			reels[i].draw();
+		};
+		update();
+	};
+	
+	main();
+</script>
+</html>
